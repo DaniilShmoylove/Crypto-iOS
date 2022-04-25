@@ -19,6 +19,7 @@
 		899837BF2816D3840022168F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		899837C12816D3860022168F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		899837C42816D3860022168F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		899837CB2816D4200022168F /* Application */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +52,7 @@
 		899837BC2816D3840022168F /* Crypto-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				899837CB2816D4200022168F /* Application */,
 				899837BD2816D3840022168F /* Crypto_iOSApp.swift */,
 				899837BF2816D3840022168F /* ContentView.swift */,
 				899837C12816D3860022168F /* Assets.xcassets */,
