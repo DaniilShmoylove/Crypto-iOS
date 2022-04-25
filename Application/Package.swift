@@ -5,11 +5,18 @@ import PackageDescription
 
 let package = Package(
     name: "Application",
+    platforms: [.iOS(.v15)],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "Application",
             targets: ["Application"]),
+        .library(
+            name: "Authentication",
+            targets: ["Authentication"]),
+        .library(
+            name: "Resources",
+            targets: ["Resources"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -20,6 +27,12 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Application",
+            dependencies: ["Authentication"]),
+        .target(
+            name: "Authentication",
+            dependencies: ["Resources"]),
+        .target(
+            name: "Resources",
             dependencies: []),
         .testTarget(
             name: "ApplicationTests",
