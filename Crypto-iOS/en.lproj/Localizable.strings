@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Crypto-iOS
+
+  Created by Daniil Shmoylove on 25.04.2022.
+  
+*/
+
+//MARK: - Auth
+"AppWelcomeTitle" = "Meta Market\n Brand to Invest";
+"AppWelcomeSubtitle" = "Track market position in real time \n and make your investment easily";
+"AppWelcomeStartButton" = "Get Started";
+"EnterPINTitle" = "Enter PIN to Authorization";
+"ForgotPINTitle" = "Forgot PIN";

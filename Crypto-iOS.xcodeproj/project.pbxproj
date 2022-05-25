@@ -11,6 +11,8 @@
 		899837C22816D3860022168F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 899837C12816D3860022168F /* Assets.xcassets */; };
 		899837C52816D3860022168F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 899837C42816D3860022168F /* Preview Assets.xcassets */; };
 		899837CE2816D4C90022168F /* Application in Frameworks */ = {isa = PBXBuildFile; productRef = 899837CD2816D4C90022168F /* Application */; };
+		899837D12816DBE60022168F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 899837D32816DBE60022168F /* Localizable.strings */; };
+		899837D52816E5480022168F /* metaOrb.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 899837D42816E4E60022168F /* metaOrb.usdz */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		899837C12816D3860022168F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		899837C42816D3860022168F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		899837CB2816D4200022168F /* Application */ = {isa = PBXFileReference; lastKnownFileType = text; path = Application; sourceTree = SOURCE_ROOT; };
+		899837D22816DBE60022168F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		899837D42816E4E60022168F /* metaOrb.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = metaOrb.usdz; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +40,7 @@
 		899837B12816D3840022168F = {
 			isa = PBXGroup;
 			children = (
+				899837CB2816D4200022168F /* Application */,
 				899837BC2816D3840022168F /* Crypto-iOS */,
 				899837BB2816D3840022168F /* Products */,
 				899837CC2816D4C90022168F /* Frameworks */,
@@ -53,10 +58,11 @@
 		899837BC2816D3840022168F /* Crypto-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				899837CB2816D4200022168F /* Application */,
 				899837BD2816D3840022168F /* Crypto_iOSApp.swift */,
 				899837C12816D3860022168F /* Assets.xcassets */,
+				899837D42816E4E60022168F /* metaOrb.usdz */,
 				899837C32816D3860022168F /* Preview Content */,
+				899837D32816DBE60022168F /* Localizable.strings */,
 			);
 			path = "Crypto-iOS";
 			sourceTree = "<group>";
@@ -138,6 +144,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				899837C52816D3860022168F /* Preview Assets.xcassets in Resources */,
+				899837D12816DBE60022168F /* Localizable.strings in Resources */,
+				899837D52816E5480022168F /* metaOrb.usdz in Resources */,
 				899837C22816D3860022168F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -154,6 +162,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		899837D32816DBE60022168F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				899837D22816DBE60022168F /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		899837C62816D3860022168F /* Debug */ = {

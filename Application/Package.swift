@@ -17,6 +17,18 @@ let package = Package(
         .library(
             name: "Resources",
             targets: ["Resources"]),
+        .library(
+            name: "CoreUI",
+            targets: ["CoreUI"]),
+        .library(
+            name: "Wallet",
+            targets: ["Wallet"]),
+        .library(
+            name: "Services",
+            targets: ["Services"]),
+        .library(
+            name: "Core",
+            targets: ["Core"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -27,13 +39,29 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "Application",
-            dependencies: ["Authentication"]),
+            dependencies: [
+                "Authentication",
+                "CoreUI",
+                "Wallet",
+            ]),
         .target(
             name: "Authentication",
             dependencies: ["Resources"]),
         .target(
             name: "Resources",
             dependencies: []),
+        .target(
+            name: "CoreUI",
+            dependencies: ["Resources"]),
+        .target(name: "Services"),
+        .target(
+            name: "Wallet",
+            dependencies: [
+                "Resources",
+                "CoreUI",
+                "Services",
+            ]),
+        .target(name: "Core"),
         .testTarget(
             name: "ApplicationTests",
             dependencies: ["Application"]),
