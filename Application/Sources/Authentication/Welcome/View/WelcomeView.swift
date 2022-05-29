@@ -106,7 +106,7 @@ extension WelcomeView {
     private var appTitleView: some View {
         Text(LocalizedStringKey("AppWelcomeTitle"))
             .font(.system(size: 42, weight: .heavy))
-            .foregroundColor(Color.toxicGreen)
+            .foregroundColor(.toxicBlue)
             .multilineTextAlignment(.center)
             .lineSpacing(4)
     }
@@ -141,7 +141,7 @@ extension WelcomeView {
                     height: 64
                 )
         }
-        .background(Color.toxicGreen)
+        .background(Color.toxicBlue)
         .cornerRadius(20)
         .padding()
     }

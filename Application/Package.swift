@@ -31,6 +31,7 @@ let package = Package(
             targets: ["Core"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.1")),
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -53,7 +54,7 @@ let package = Package(
         .target(
             name: "CoreUI",
             dependencies: ["Resources"]),
-        .target(name: "Services"),
+        .target(name: "Services", dependencies: [.product(name: "Alamofire", package: "Alamofire")]),
         .target(
             name: "Wallet",
             dependencies: [

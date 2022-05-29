@@ -19,6 +19,7 @@ public struct WalletView: View {
     public var body: some View {
         VStack(spacing: 32) {
             self.balanceHeader
+            self.info
             self.inventory
         }
     }
@@ -77,7 +78,7 @@ extension WalletView {
             }
             .font(.system(size: 14, weight: .bold))
             List { }
-            .listStyle(.inset)
+                .listStyle(.inset)
         }
         .padding()
     }

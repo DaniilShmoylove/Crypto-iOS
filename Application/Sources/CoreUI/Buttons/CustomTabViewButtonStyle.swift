@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CustomTabViewButtonStyle.swift
 //  
 //
 //  Created by Daniil Shmoylove on 02.05.2022.

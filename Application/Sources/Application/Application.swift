@@ -35,9 +35,9 @@ public struct Application: View {
                 BarView(
                     currentTab: self.$currentTab,
                     tabBarContent: [
+                        "bag",
                         "circle.grid.2x2.fill",
-                        "magnifyingglass",
-                        "person.2.fill"
+                        "magnifyingglass"
                     ]
                 )
             }

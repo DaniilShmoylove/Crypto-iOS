@@ -10,6 +10,8 @@ import SwiftUI
 public class HapticService {
     private init() { }
     
+    //MARK: - Impact style
+    
     public static func impact(
         style: UIImpactFeedbackGenerator.FeedbackStyle
     ) {
@@ -17,12 +19,16 @@ public class HapticService {
         generator.impactOccurred()
     }
     
+    //MARK: - Notification style
+    
     public static func notification(
         type: UINotificationFeedbackGenerator.FeedbackType
     ) {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(type)
     }
+    
+    //MARK: - Selection style
     
     public static func selection() {
         let generator = UISelectionFeedbackGenerator()
