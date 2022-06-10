@@ -10,13 +10,11 @@ import Resources
 
 public struct ChartView: View {
     
-    @Environment(\.colorScheme) var colorScheme
-    
     //MARK: - Properties
     
-    private var data: [CGFloat]
+    private var data: [Double]
     
-    private let isShowingPriceLeading: Bool
+    private let isShowingPrice: Bool
     
     @State private var percentage: CGFloat = 0
     @State private var currentPlot: String = ""
@@ -25,21 +23,21 @@ public struct ChartView: View {
     @State private var translation: CGFloat = 0
     
     public init(
-        for data: [CGFloat],
-        isShowingPriceLeading: Bool = true
+        for data: [Double],
+        isShowingPrice: Bool = true
     ) {
         self.data = data
-        self.isShowingPriceLeading = isShowingPriceLeading
+        self.isShowingPrice = isShowingPrice
     }
     
     //MARK: - Body
     
     public var body: some View {
-        VStack {
+        ZStack {
             GeometryReader { proxy in
                 let height = proxy.size.height
                 let width = proxy.size.width / CGFloat(self.data.count - 1)
-                let maxPoint = (self.data.max() ?? 0) + 100
+                let maxPoint = (self.data.max() ?? 0)
                 let points = data.enumerated().compactMap { item -> CGPoint in
                     let progress = item.element / maxPoint
                     let pathHeight = progress * height
@@ -53,19 +51,18 @@ public struct ChartView: View {
                     }
                     .trim(from: 0, to: self.percentage)
                     .stroke(
-                        Color.primaryGreen2,
+                        Color.primaryBlue,
                         style: StrokeStyle(
-                            lineWidth: 2.5,
+                            lineWidth: 2.0,
                             lineCap: .round,
                             lineJoin: .round
                         )
                     )
-                    .offset(y: -16)
                     
                     LinearGradient(
                         gradient: Gradient(colors: [
-                            .primaryGreen2.opacity(0.35),
-                            .primaryGreen2.opacity(0.02)
+                            .primaryBlue.opacity(0.125),
+                            .primaryBlue.opacity(0.02)
                         ]),
                         startPoint: .top,
                         endPoint: .bottom
@@ -79,7 +76,6 @@ public struct ChartView: View {
                         }
                     )
                     .opacity(self.percentage)
-                    .offset(y: -16)
                 }
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -88,7 +84,6 @@ public struct ChartView: View {
                         }
                     }
                 }
-                .overlay(self.price)
                 .background(
                     self.pointer(for: proxy),
                     alignment: .bottomLeading
@@ -101,7 +96,7 @@ public struct ChartView: View {
                             }
                             let translation = value.location.x - 40
                             let index = max(min(Int((translation / width).rounded() + 1), self.data.count - 1), 0)
-                            self.currentPlot = "$\(self.data[index])"
+                            self.currentPlot = "\(self.data[index])"
                             self.translation = translation
                             self.offset = CGSize(width: points[index].x - 40, height: points[index].y - height)
                         }
@@ -112,33 +107,8 @@ public struct ChartView: View {
                         }
                 )
             }
-            .frame(height: 196)
-            
-            HStack {
-                Text("Today")
-                    .frame(maxWidth: .infinity)
-                Text("Week")
-                    .frame(maxWidth: .infinity)
-                    .padding(7)
-                    .background(Color(uiColor: self.colorScheme == .light ? .white : .secondarySystemFill))
-                    .cornerRadius(24)
-                    .padding(4)
-                    .shadow(color: .black.opacity(0.075), radius: 8)
-                Text("Month")
-                    .frame(maxWidth: .infinity)
-                Text("Year")
-                    .frame(maxWidth: .infinity)
-                Text("All")
-                    .frame(maxWidth: .infinity)
-            }
-            .foregroundColor(.secondary)
-            .font(.system(size: 12, weight: .semibold))
-            .frame(maxWidth: .infinity)
-            .frame(height: 36)
-            .background(Color(uiColor: .systemGray6))
-            .cornerRadius(24)
         }
-        .padding(8)
+        .overlay(self.price)
     }
 }
 
@@ -154,22 +124,20 @@ private extension ChartView {
     
     @ViewBuilder
     private var price: some View {
-        if self.isShowingPriceLeading {
-            HStack {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text(self.data.max() ?? 0, format: .currency(code: "USD"))
-                        .padding(2)
-                    Spacer()
-                    Text(self.getAverage(), format: .currency(code: "USD"))
-                        .padding(2)
-                    Spacer()
-                    Text(self.data.min() ?? 0, format: .currency(code: "USD"))
-                        .padding(2)
-                }
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundColor(.secondary)
+        if self.isShowingPrice {
+            VStack(alignment: .leading, spacing: 0) {
+                Text(self.data.max() ?? 0, format: .currency(code: "USD"))
+                    .padding(2)
+                //                    Spacer()
+                //                    Text(self.getAverage(), format: .currency(code: "USD"))
+                //                        .padding(2)
                 Spacer()
+                Text(self.data.min() ?? 0, format: .currency(code: "USD"))
+                    .padding(2)
             }
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
     
@@ -177,7 +145,7 @@ private extension ChartView {
     
     private func pointer(for proxy: GeometryProxy) -> some View {
         VStack(spacing: 0) {
-            Text(self.currentPlot)
+            Text(Double(self.currentPlot) ?? 0, format: .currency(code: "USD"))
                 .font(.system(size: 14, weight: .bold))
                 .padding(.vertical, 4)
                 .padding(.horizontal, 8)
@@ -205,13 +173,13 @@ private extension ChartView {
     }
 }
 
-#if DEBUG
-struct SwiftUIView_Previews: PreviewProvider {
-    static var previews: some View {
-        ChartView(
-            for: Array((0...45).map { CGFloat($0 * Int.random(in: 0...10)) })
-        )
-        .preferredColorScheme(.light)
-    }
-}
-#endif
+//#if DEBUG
+//struct SwiftUIView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ChartView(
+//            for: Array((0...45).map { CGFloat($0 * Int.random(in: 0...10)) })
+//        )
+//        .preferredColorScheme(.light)
+//    }
+//}
+//#endif

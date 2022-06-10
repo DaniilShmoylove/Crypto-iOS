@@ -13,6 +13,7 @@ import Resources
 public struct WelcomeView: View {
     
     let getStartedAction: () -> Void
+    
     @State private var isShowingWelcomeView: Bool = false
     
     public init(getStartedAction: @escaping () -> Void) {
@@ -129,17 +130,8 @@ extension WelcomeView {
         } label: {
             Text(LocalizedStringKey("AppWelcomeStartButton"))
                 .foregroundColor(.black)
-                .font(
-                    .system(
-                        size: 16,
-                        weight: .bold,
-                        design: .default
-                    )
-                )
-                .frame(
-                    width: UIScreen.main.bounds.width - 154,
-                    height: 64
-                )
+                .font(.system(size: 16, weight: .bold))
+                .frame(width: 236, height: 64)
         }
         .background(Color.toxicBlue)
         .cornerRadius(20)

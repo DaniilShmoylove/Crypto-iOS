@@ -10,10 +10,12 @@ import Authentication
 import CoreUI
 import Wallet
 import Resources
+import Services
 
 public struct Application: View {
     
     @AppStorage("current_tab") private var currentTab = 0
+    @StateObject private var networkService = NetworkService.shared
     
     public init() { }
     
@@ -53,13 +55,24 @@ public struct Application: View {
                         VStack {
                             Image(systemName: "bell.badge")
                                 .symbolRenderingMode(.palette)
-                                .foregroundStyle(Color.primaryRed, .primary)
-                                .font(.system(size: 16, weight: .heavy))
+                                .foregroundStyle(
+                                    self.networkService.status == .notReachable ? .gray : Color.primaryRed,
+                                    self.networkService.status == .notReachable ? .gray : .primary
+                                )
+                                .font(.system(size: 14, weight: .heavy))
                                 .frame(maxWidth: .infinity)
+                                .scaleEffect(self.networkService.status == .notReachable ? 0.85 : 1)
+                                .animation(.default, value: self.networkService.status)
                         }
                         .padding(6)
                     }
                     .buttonStyle(.tabView)
+                    .disabled(self.networkService.status == .notReachable)
+                }
+                
+                ToolbarItem(placement: .principal) {
+                    Text("Home")
+                        .font(.system(size: 18, weight: .heavy))
                 }
             }
         }

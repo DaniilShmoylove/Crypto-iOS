@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-//MARK: - Body of TabViewButton
+//MARK: - CustomTabViewButtonStyle
 
 public struct CustomTabViewButtonStyle: ButtonStyle {
     public init() { }
@@ -44,7 +44,7 @@ private extension CustomTabViewButtonStyle {
 }
 
 #if DEBUG
-struct FlatAprilButtonStyle_Previews: PreviewProvider {
+struct CustomTabViewButtonStyle_Previews: PreviewProvider {
     static var previews: some View {
         Button { } label: {
             Text("Button")

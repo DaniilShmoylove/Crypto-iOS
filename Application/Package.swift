@@ -28,7 +28,7 @@ let package = Package(
             targets: ["Services"]),
         .library(
             name: "Core",
-            targets: ["Core"]),
+            targets: ["Core"])
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.1")),
@@ -43,6 +43,7 @@ let package = Package(
             dependencies: [
                 "Authentication",
                 "CoreUI",
+                "Services",
                 "Wallet",
             ]),
         .target(
@@ -54,7 +55,11 @@ let package = Package(
         .target(
             name: "CoreUI",
             dependencies: ["Resources"]),
-        .target(name: "Services", dependencies: [.product(name: "Alamofire", package: "Alamofire")]),
+        .target(name: "Services",
+                dependencies: [
+                    "Core",
+                    .product(name: "Alamofire", package: "Alamofire"),
+                ]),
         .target(
             name: "Wallet",
             dependencies: [
@@ -62,7 +67,9 @@ let package = Package(
                 "CoreUI",
                 "Services",
             ]),
-        .target(name: "Core"),
+        .target(name: "Core", dependencies: [
+            .product(name: "Alamofire", package: "Alamofire"),
+        ]),
         .testTarget(
             name: "ApplicationTests",
             dependencies: ["Application"]),
