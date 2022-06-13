@@ -14,7 +14,7 @@ extension Color {
     public static var toxicBlue: Color { Color("blue", bundle: .module) }
     public static var primaryGreen2: Color { Color("primary_green_2", bundle: .module) }
     public static var primaryRed: Color { Color("primary_red", bundle: .module) }
-    public static var primaryBlue: Color { Color("primaryBlue", bundle: .module) }
+    public static var primaryBlue: Color { Color("accent_color_blue", bundle: .module) }
 }
 
 

@@ -7,16 +7,21 @@
 
 import SwiftUI
 import Resources
+import Services
 
 //MARK: - CustomSegmentedPickerStyle
 
 public struct CustomSegmentedPickerView: View {
     public init(
         content: [String],
-        selection: Binding<Int>
+        selection: Binding<Int>,
+        segmentColor: Color = Color(uiColor: .systemGray6),
+        backgroundColor: Color = Color.clear
     ) {
         self.content = content
         self._selection = selection
+        self.segmentColor = segmentColor
+        self.backgroundColor = backgroundColor
     }
     
     @Namespace private var namespace
@@ -24,6 +29,8 @@ public struct CustomSegmentedPickerView: View {
     @Binding private var selection: Int
     
     private let content: [String]
+    private let segmentColor: Color
+    private let backgroundColor: Color
     
     public var body: some View {
         HStack(alignment: .center) {
@@ -40,13 +47,14 @@ public struct CustomSegmentedPickerView: View {
                     currentItem: self.$selection,
                     namespace: self.namespace,
                     itemName: item,
-                    tab: index
+                    tab: index,
+                    segmentColor: self.segmentColor
                 )
             }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 36)
-        .background(Color(uiColor: .systemGray6))
+        .background(self.backgroundColor)
         .cornerRadius(24)
     }
 }
@@ -58,52 +66,58 @@ public typealias SegmentPicker = CustomSegmentedPickerView
 //MARK: - CustomSegmentedPickerItemView
 
 fileprivate struct CustomSegmentedPickerItemView: View {
-    
-    @Environment(\.colorScheme) var colorScheme
-    
     @Binding var currentItem: Int
     
     let namespace: Namespace.ID
     let itemName: String
     let tab: Int
+    let segmentColor: Color
     
     var body: some View {
-        Button {
-            
-            //MARK: - Move to current tab
-            
-            self.currentItem = tab
-        } label: {
-            
-            //MARK: - Button label
-            
-            Text(LocalizedStringKey(self.itemName))
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(self.currentItem == tab ? .primaryBlue : .secondary)
-                .textCase(.uppercase)
-                .frame(maxWidth: .infinity)
-                .background(
-                    ZStack {
-                        if currentItem == tab {
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(Color(uiColor: self.colorScheme == .light ? .white : .secondarySystemFill))
-                                .frame(height: 36)
-                                .shadow(color: .black.opacity(0.075), radius: 8)
-                            
-                                .matchedGeometryEffect(
-                                    id: "underline",
-                                    in: self.namespace,
-                                    properties: .frame
-                                )
-                        } else {
-                            RoundedRectangle(cornerRadius: 24)
-                                .fill(Color.clear)
-                                .frame(height: 36)
-                                .shadow(color: .black.opacity(0.075), radius: 8)
-                        }
-                    }
+        
+        //MARK: - Button label
+        
+        Text(LocalizedStringKey(self.itemName))
+            .font(.system(size: 14, weight: .semibold))
+            .foregroundColor(.primary)
+            .textCase(.uppercase)
+            .frame(maxWidth: .infinity)
+            .frame(height: 36)
+            .background(self.segmentShape)
+            .animation(
+                .spring(
+                    response: 0.7,
+                    dampingFraction: 0.7,
+                    blendDuration: 0
+                ),
+                value: self.currentItem
+            )
+            .onTapGesture {
+                
+                //MARK: - Move to current tab
+                
+                self.currentItem = tab
+                
+                //MARK: - Haptic engine
+                
+                HapticService.impact(style: .medium)
+            }
+    }
+    
+    @ViewBuilder
+    private var segmentShape: some View {
+        if currentItem == tab {
+            RoundedRectangle(cornerRadius: 24)
+                .fill(self.segmentColor)
+                .matchedGeometryEffect(
+                    id: "underline",
+                    in: self.namespace,
+                    properties: .frame
                 )
-                .animation(.spring(), value: self.currentItem)
+        } else {
+            Rectangle()
+                .fill(Color(uiColor: .systemBackground))
+                .opacity(0.001)
         }
     }
 }

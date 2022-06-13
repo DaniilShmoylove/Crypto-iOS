@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Alamofire
+import SharedModel
 
 final public class CryptoService: ObservableObject {
     public init() { }
@@ -18,6 +19,10 @@ final public class CryptoService: ObservableObject {
     //MARK: - Coin detail data
     
     @Published public var coinDetailData: CoinDetail? = nil
+    
+    //MARK: - Best coins data
+    
+    @Published public var bestCoinsData: BestCoins? = nil
     
     //MARK: - Fetch crypto data
     
@@ -33,13 +38,15 @@ final public class CryptoService: ObservableObject {
             }
     }
     
-    public func fetchAllCoinsList(for uuid: String) throws {
-        guard self.allCurrentMetaData == nil else { return }
-        AF.request(CryptoRouter.getCoinData(for: uuid))
+    //MARK: - Fetch best coins data
+    
+    private func fetchBestCoins() throws {
+        guard self.bestCoinsData == nil else { return }
+        AF.request(CryptoRouter.getBestCoins)
             .validate()
-            .responseDecodable(of: CoinsModel.self) { (response) in
-//                guard let data = response.value else { return }
-//                self.allCurrentMetaData = data.data?.coins
+            .responseDecodable(of: BestCoin.self) { (response) in
+                guard let data = response.value else { return }
+                self.bestCoinsData = data.data?.bestCoins
             }
     }
     

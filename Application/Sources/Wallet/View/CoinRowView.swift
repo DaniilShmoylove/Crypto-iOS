@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Resources
+import SharedModel
 
 public struct CoinRowView: View {
     
@@ -35,25 +36,27 @@ public struct CoinRowView: View {
                     .cornerRadius(20)
             }
             
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(self.data.name ?? "")
-                    .font(.system(size: 16, weight: .bold))
+                    .fontWeight(.bold)
                     .foregroundColor(.primary)
                 Text(self.data.symbol ?? "")
-                    .font(.system(size: 12, weight: .semibold))
+                    .fontWeight(.semibold)
                     .foregroundColor(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            VStack(alignment: .trailing, spacing: 2) {
+            
+            VStack(alignment: .trailing, spacing: 4) {
                 Text(Double(self.data.price!)!, format: .currency(code: "USD"))
-                    .font(.system(size: 16, weight: .bold))
+                    .fontWeight(.bold)
                     .foregroundColor(.primary)
                 if let change = self.data.change {
-                Text(change + "%")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(Double(change) ?? 0 > 0 ? .primaryGreen2 : .primaryRed)
+                    Text(change + "%")
+                        .fontWeight(.semibold)
+                        .foregroundColor(Double(change) ?? 0 > 0 ? .primaryGreen2 : .primaryRed)
                 }
             }
         }
+        .font(.system(size: 14))
     }
 }

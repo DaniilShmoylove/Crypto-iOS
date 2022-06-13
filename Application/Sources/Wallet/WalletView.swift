@@ -12,27 +12,22 @@ import Services
 import Core
 
 public struct WalletView: View {
+    public init() { }
     
     @StateObject private var cryptoService = CryptoService()
     @StateObject private var networkService = NetworkService.shared
     
     @State private var isShowingStats: Bool = false
-    public init() { }
+    @State private var selectedInventory: Int = 1
     
     public var body: some View {
-        VStack(spacing: 16) {
-            
-            //MARK: - User balance
-            
-            self.balanceHeader
-
-            //MARK: - User coins inventory
-            
-            self.inventory
-        }
-        .onChange(of: self.networkService.status) { newValue in
-            self.cryptoService.reachable(for: newValue)
-        }
+        
+        //MARK: - User coins inventory
+        
+        self.content
+            .onChange(of: self.networkService.status) { newValue in
+                self.cryptoService.reachable(for: newValue)
+            }
     }
 }
 
@@ -48,17 +43,27 @@ extension WalletView {
             }
             .foregroundColor(.primaryGreen2)
             .font(.system(size: 14, weight: .bold))
+            
+            self.inventoryPicker
         }
+        .frame(maxWidth: .infinity)
     }
-
-    private var inventory: some View {
+    
+    private var content: some View {
         List {
+            
+            //MARK: - User balance
+            
+            self.balanceHeader
+                .listSectionSeparator(.hidden, edges: .all)
+            
             if let data = self.cryptoService.allCurrentMetaData {
                 ForEach(data, id: \.self) { item in
                     Button {
                         self.isShowingStats.toggle()
                     } label: {
                         CoinRowView(data: item)
+                            .padding(.vertical, 6)
                     }
                     .listSectionSeparator(.hidden, edges: .top)
                     .contextMenu {
@@ -89,7 +94,6 @@ extension WalletView {
                             cryptoService: self.cryptoService
                         )
                     }
-                    .padding(.vertical, 2)
                 }
             }
             Spacer(minLength: 48)
@@ -97,7 +101,15 @@ extension WalletView {
         }
         .animation(.default, value: self.cryptoService.allCurrentMetaData?.count)
         .listStyle(.inset)
-        .padding(.top)
+    }
+    
+    private var inventoryPicker: some View {
+        SegmentPicker(
+            content: ["Portfolio", "Favorite"],
+            selection: self.$selectedInventory,
+            segmentColor: Color(uiColor: .systemGray6)
+        )
+        .padding(.vertical, 22)
     }
 }
 

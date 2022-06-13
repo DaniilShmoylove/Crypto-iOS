@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Resources
+import Services
 
 public struct ChartView: View {
     
@@ -98,7 +99,7 @@ public struct ChartView: View {
                             let index = max(min(Int((translation / width).rounded() + 1), self.data.count - 1), 0)
                             self.currentPlot = "\(self.data[index])"
                             self.translation = translation
-                            self.offset = CGSize(width: points[index].x - 40, height: points[index].y - height)
+                            self.offset = CGSize(width: points[index].x - 40, height: .zero)
                         }
                         .onEnded { value in
                             withAnimation {
@@ -128,9 +129,9 @@ private extension ChartView {
             VStack(alignment: .leading, spacing: 0) {
                 Text(self.data.max() ?? 0, format: .currency(code: "USD"))
                     .padding(2)
-                //                    Spacer()
-                //                    Text(self.getAverage(), format: .currency(code: "USD"))
-                //                        .padding(2)
+                Spacer()
+                Text(self.getAverage(), format: .currency(code: "USD"))
+                    .padding(2)
                 Spacer()
                 Text(self.data.min() ?? 0, format: .currency(code: "USD"))
                     .padding(2)
@@ -146,40 +147,20 @@ private extension ChartView {
     private func pointer(for proxy: GeometryProxy) -> some View {
         VStack(spacing: 0) {
             Text(Double(self.currentPlot) ?? 0, format: .currency(code: "USD"))
-                .font(.system(size: 14, weight: .bold))
-                .padding(.vertical, 4)
-                .padding(.horizontal, 8)
-                .cornerRadius(8)
+                .font(.system(size: 12, weight: .semibold))
+                .frame(maxWidth: .infinity, alignment: .center)
                 .offset(x: self.translation < 10 ? 30 : 0)
                 .offset(x: self.translation > proxy.size.width - 60 ? -30 : 0)
-                .padding(.bottom)
-            
-            Circle()
-                .fill(.primary)
-                .frame(width: 18, height: 18)
-                .overlay(
-                    Circle()
-                        .fill(Color(uiColor: .systemBackground))
-                        .frame(width: 8, height: 8)
-                )
+                .animation(.default, value: self.offset)
+                .onChange(of: self.currentPlot) { _ in
+                    HapticService.impact(style: .medium)
+                }
             Rectangle()
-                .fill(.gray)
+                .fill(.secondary)
                 .frame(width: 1.5)
         }
-        .frame(width: 80, height: 170)
+        .frame(width: 80, height: 164)
         .opacity(self.isShowingPlot ? 1 : 0)
-        .offset(y: 100)
         .offset(self.offset)
     }
 }
-
-//#if DEBUG
-//struct SwiftUIView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ChartView(
-//            for: Array((0...45).map { CGFloat($0 * Int.random(in: 0...10)) })
-//        )
-//        .preferredColorScheme(.light)
-//    }
-//}
-//#endif

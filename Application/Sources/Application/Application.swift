@@ -39,13 +39,13 @@ public struct Application: View {
                     tabBarContent: [
                         "bag",
                         "circle.grid.2x2.fill",
-                        "magnifyingglass"
+                        "person.fill"
                     ]
                 )
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         
                     } label: {
@@ -57,7 +57,7 @@ public struct Application: View {
                                 .symbolRenderingMode(.palette)
                                 .foregroundStyle(
                                     self.networkService.status == .notReachable ? .gray : Color.primaryRed,
-                                    self.networkService.status == .notReachable ? .gray : .primary
+                                    .gray
                                 )
                                 .font(.system(size: 14, weight: .heavy))
                                 .frame(maxWidth: .infinity)
@@ -72,7 +72,25 @@ public struct Application: View {
                 
                 ToolbarItem(placement: .principal) {
                     Text("Home")
-                        .font(.system(size: 18, weight: .heavy))
+                        .font(.system(size: 18, weight: .bold))
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        
+                    } label: {
+                        
+                        //MARK: - Button label
+                        
+                        VStack {
+                            Image(systemName: "qrcode.viewfinder")
+                                .foregroundColor(.gray)
+                                .font(.system(size: 14, weight: .heavy))
+                                .frame(maxWidth: .infinity)
+                        }
+                        .padding(6)
+                    }
+                    .buttonStyle(.tabView)
                 }
             }
         }

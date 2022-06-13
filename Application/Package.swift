@@ -28,10 +28,14 @@ let package = Package(
             targets: ["Services"]),
         .library(
             name: "Core",
-            targets: ["Core"])
+            targets: ["Core"]),
+        .library(
+            name: "SharedModel",
+            targets: ["SharedModel"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.1")),
+        .package(url: "https://github.com/dmytro-anokhin/url-image.git", from: "3.0.0"),
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -54,10 +58,15 @@ let package = Package(
             dependencies: []),
         .target(
             name: "CoreUI",
-            dependencies: ["Resources"]),
-        .target(name: "Services",
+            dependencies: [
+                "Resources",
+                "Services",
+            ]),
+        .target(
+            name: "Services",
                 dependencies: [
                     "Core",
+                    "SharedModel",
                     .product(name: "Alamofire", package: "Alamofire"),
                 ]),
         .target(
@@ -66,10 +75,12 @@ let package = Package(
                 "Resources",
                 "CoreUI",
                 "Services",
+                "SharedModel",
             ]),
         .target(name: "Core", dependencies: [
             .product(name: "Alamofire", package: "Alamofire"),
         ]),
+        .target(name: "SharedModel"),
         .testTarget(
             name: "ApplicationTests",
             dependencies: ["Application"]),

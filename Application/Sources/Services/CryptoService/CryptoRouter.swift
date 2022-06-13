@@ -13,7 +13,7 @@ internal enum CryptoRouter {
     //MARK: - Router cases
     
     case getAllCurrentMetaData
-    case getAllCoinsListData
+    case getBestCoins
     case getCoinData(for: String)
     case getHistoricalData(for: String)
     
@@ -35,8 +35,8 @@ internal enum CryptoRouter {
             return "/v2/coin/\(uuid)"
         case .getAllCurrentMetaData:
             return "/v2/coins"
-        case .getAllCoinsListData:
-            return "/v2/coins"
+        case .getBestCoins:
+            return "/v2//stats"
         case let .getHistoricalData(for: uuid):
             return "/v2/coin/\(uuid)/history"
         }
@@ -50,7 +50,7 @@ internal enum CryptoRouter {
             return .get
         case .getAllCurrentMetaData:
             return .get
-        case .getAllCoinsListData:
+        case .getBestCoins:
             return .get
         case .getHistoricalData:
             return .get
@@ -70,16 +70,13 @@ internal enum CryptoRouter {
                 "uuids": [
                     "Qwsogvtv82FCd",
                     "razxDUgYGNAdQ",
-//                    "HIVsRcGKkPFtW",
                     "aKzUVe4Hh_CON",
                     "WcwrkfNI4FUAe",
                     "qzawljRxB5bYu",
-                    "vSo2fu9iE1s0Y",
-//                    "9K7m6ufraZ6gh",
-//                    "yhjMzLPhuIDl"
+                    "vSo2fu9iE1s0Y"
                 ]
             ]
-        case .getAllCoinsListData:
+        case .getBestCoins:
             return [:]
         case .getHistoricalData:
             return [
