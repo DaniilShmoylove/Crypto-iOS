@@ -7,13 +7,14 @@
 
 import SwiftUI
 import SceneKit
-import AuthenticationServices
 import Resources
+import Services
 
 public struct WelcomeView: View {
     
     let getStartedAction: () -> Void
     
+    @StateObject private var signInViewModel = SignInViewModel()
     @State private var isShowingWelcomeView: Bool = false
     
     public init(getStartedAction: @escaping () -> Void) {
@@ -72,6 +73,7 @@ public struct WelcomeView: View {
                     }
                 }
             }
+            .background(self.destination)
         }
         .preferredColorScheme(.dark)
     }
@@ -126,16 +128,31 @@ extension WelcomeView {
     
     private var getStartedButtonView: some View {
         Button {
-            self.getStartedAction()
+            self.signInViewModel.isSignInWithApple.toggle()
         } label: {
-            Text(LocalizedStringKey("AppWelcomeStartButton"))
-                .foregroundColor(.black)
-                .font(.system(size: 16, weight: .bold))
-                .frame(width: 236, height: 64)
+            HStack {
+                Image(systemName: "applelogo")
+                Text("Sign in with Apple")
+            }
+            .foregroundColor(.black)
+            .font(.system(size: 16, weight: .bold))
+            .frame(width: 236, height: 64)
         }
         .background(Color.toxicBlue)
         .cornerRadius(20)
         .padding()
+    }
+    
+    //Destination entry
+    
+    private var destination: some View {
+        NavigationLink(
+            "",
+            isActive: self.$signInViewModel.isSignInWithApple
+        ) {
+            SignInView()
+        }
+        .labelsHidden()
     }
 }
 

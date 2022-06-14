@@ -8,6 +8,7 @@
 import SwiftUI
 import Application
 import Services
+import FirebaseCore
 
 @main
 struct Crypto_iOSApp: App {
@@ -31,8 +32,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+        didFinishLaunchingWithOptions launchOptions: [
+            UIApplication.LaunchOptionsKey: Any
+        ]? = nil
     ) -> Bool {
+        
+        //MARK: - Firebase configure
+        
+        FirebaseApp.configure()
         
         //MARK: - Listen to reachability
         

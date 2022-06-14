@@ -20,8 +20,23 @@ public struct Application: View {
     public init() { }
     
     public var body: some View {
+        ZStack {
+//            if true {
+                self.authentication
+//            } else {
+//                self.application
+//            }
+        }
+    }
+}
+
+extension Application {
+    
+    //MARK: - Application View
+    
+    private var application: some View {
         NavigationView {
-            ZStack(alignment: .bottom) {
+            VStack {
                 
                 //MARK: - TabView with page style
                 
@@ -94,5 +109,12 @@ public struct Application: View {
                 }
             }
         }
+    }
+    
+    //MARK: - Authentication View
+    
+    private var authentication: some View {
+        WelcomeView { }
+            .transition(.move(edge: .bottom))
     }
 }

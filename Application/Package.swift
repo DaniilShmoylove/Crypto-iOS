@@ -34,8 +34,19 @@ let package = Package(
             targets: ["SharedModel"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.6.1")),
-        .package(url: "https://github.com/dmytro-anokhin/url-image.git", from: "3.0.0"),
+        .package(
+            url: "https://github.com/Alamofire/Alamofire.git",
+            .upToNextMajor(from: "5.6.1")
+        ),
+        .package(
+            url: "https://github.com/dmytro-anokhin/url-image.git",
+            from: "3.0.0"
+        ),
+        .package(
+            name: "Firebase",
+            url: "https://github.com/firebase/firebase-ios-sdk.git",
+            from: "9.1.0"
+        ),
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -52,10 +63,16 @@ let package = Package(
             ]),
         .target(
             name: "Authentication",
-            dependencies: ["Resources"]),
+            dependencies: [
+                "Resources",
+                "Services",
+                "CoreUI",
+                .product(name: "FirebaseAuth", package: "Firebase"),
+            ]
+        ),
         .target(
-            name: "Resources",
-            dependencies: []),
+            name: "Resources"
+        ),
         .target(
             name: "CoreUI",
             dependencies: [
@@ -64,11 +81,11 @@ let package = Package(
             ]),
         .target(
             name: "Services",
-                dependencies: [
-                    "Core",
-                    "SharedModel",
-                    .product(name: "Alamofire", package: "Alamofire"),
-                ]),
+            dependencies: [
+                "Core",
+                "SharedModel",
+                .product(name: "Alamofire", package: "Alamofire"),
+            ]),
         .target(
             name: "Wallet",
             dependencies: [
@@ -77,9 +94,11 @@ let package = Package(
                 "Services",
                 "SharedModel",
             ]),
-        .target(name: "Core", dependencies: [
-            .product(name: "Alamofire", package: "Alamofire"),
-        ]),
+        .target(
+            name: "Core",
+            dependencies: [
+                .product(name: "Alamofire", package: "Alamofire"),
+            ]),
         .target(name: "SharedModel"),
         .testTarget(
             name: "ApplicationTests",

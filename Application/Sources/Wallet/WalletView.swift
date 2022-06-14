@@ -9,7 +9,6 @@ import SwiftUI
 import CoreUI
 import Resources
 import Services
-import Core
 
 public struct WalletView: View {
     public init() { }
@@ -32,6 +31,9 @@ public struct WalletView: View {
 }
 
 extension WalletView {
+    
+    //MARK: - Balance header
+    
     private var balanceHeader: some View {
         VStack(spacing: 2) {
             Text(20837.05, format: .currency(code: "USD"))
@@ -48,6 +50,8 @@ extension WalletView {
         }
         .frame(maxWidth: .infinity)
     }
+    
+    //MARK: - Content
     
     private var content: some View {
         List {
@@ -96,12 +100,12 @@ extension WalletView {
                     }
                 }
             }
-            Spacer(minLength: 48)
-                .listSectionSeparator(.hidden)
         }
         .animation(.default, value: self.cryptoService.allCurrentMetaData?.count)
         .listStyle(.inset)
     }
+    
+    //MARK: - Inventory picker 
     
     private var inventoryPicker: some View {
         SegmentPicker(

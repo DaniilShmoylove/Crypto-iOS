@@ -37,14 +37,11 @@ extension NetworkService {
     public func listenToReachability() {
         reachabilityManager?.startListening { [weak self] status in
             guard let self = self else { return }
-            print(status)
             switch status {
             case let .reachable(connectionType):
                 self.status = .reachable(connectionType)
-                print(connectionType)
             case .notReachable:
                 self.status = .notReachable
-                print("notReachable")
             case .unknown:
                 self.status = .unknown
             }

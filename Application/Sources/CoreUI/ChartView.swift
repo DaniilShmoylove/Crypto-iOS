@@ -85,7 +85,7 @@ public struct ChartView: View {
                         }
                     }
                 }
-                .background(
+                .overlay(
                     self.pointer(for: proxy),
                     alignment: .bottomLeading
                 )
@@ -147,13 +147,13 @@ private extension ChartView {
     private func pointer(for proxy: GeometryProxy) -> some View {
         VStack(spacing: 0) {
             Text(Double(self.currentPlot) ?? 0, format: .currency(code: "USD"))
-                .font(.system(size: 12, weight: .semibold))
+                .font(.system(size: 10, weight: .semibold))
                 .frame(maxWidth: .infinity, alignment: .center)
                 .offset(x: self.translation < 10 ? 30 : 0)
                 .offset(x: self.translation > proxy.size.width - 60 ? -30 : 0)
                 .animation(.default, value: self.offset)
                 .onChange(of: self.currentPlot) { _ in
-                    HapticService.impact(style: .medium)
+                    HapticService.impact(style: .light)
                 }
             Rectangle()
                 .fill(.secondary)

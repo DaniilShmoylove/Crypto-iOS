@@ -32,126 +32,9 @@ public struct CoinDetailView: View {
     public var body: some View {
         NavigationView {
             List {
-                Section {
-                    VStack(spacing: 8) {
-                        self.priceStats
-                        
-                        ZStack {
-                            if let sparkline = self.cryptoService.coinDetailData?.sparkline {
-                                let sparklineData = sparkline.map { Double($0) ?? 0 }
-                                ChartView(
-                                    for: sparklineData,
-                                    isShowingPrice: false
-                                )
-                                .padding(.top, 24)
-                            } else {
-                                ProgressView()
-                            }
-                        }
-                        .frame(height: 164)
-                        
-                        SegmentPicker(
-                            content: [
-                                "1d", "1w", "1m", "1y", "5y"
-                            ],
-                            selection: self.$selected
-                        )
-                        .padding(.vertical)
-                    }
-                }
-                
-                Section {
-                    HStack {
-                        Label {
-                            Text("Send")
-                        } icon: {
-                            Image(systemName: "arrow.uturn.right")
-                        }
-                            .foregroundColor(.primaryBlue)
-                            .font(.system(size: 16, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 42)
-                            .background(Color.primaryBlue.opacity(0.125))
-                            .cornerRadius(12)
-                        
-                        Text("Buy \(self.data.symbol ?? "")")
-                            .foregroundColor(.primaryBlue)
-                            .font(.system(size: 16, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 42)
-                            .background(Color.primaryBlue.opacity(0.125))
-                            .cornerRadius(12)
-                    }
-                    .padding(.vertical, 4)
-                }
-                
-//                if let data = self.cryptoService.coinDetailData {
-//
-//                    //TODO: - onAppear animation
-//
-//                    Section {
-//                        HStack {
-//                            Text("All time high")
-//                            Spacer()
-//                            Text(data.allTimeHigh?.price ?? "")
-//                                .foregroundColor(.secondary)
-//                        }
-//                        .padding(.vertical, 4)
-//
-//                        HStack {
-//                            Text("Market cap")
-//                            Spacer()
-//                            Text(data.marketCap ?? "")
-//                                .foregroundColor(.secondary)
-//                        }
-//                        .padding(.vertical, 4)
-//
-//                        HStack {
-//                            Text("24h Value")
-//                            Spacer()
-//                            Text(data.the24HVolume ?? "")
-//                                .foregroundColor(.secondary)
-//                        }
-//                        .padding(.vertical, 4)
-//                    }
-//                    .font(.system(size: 14, weight: .bold))
-//                }
-                
-                Section {
-                    Toggle(isOn: .constant(true)) {
-                        Text("News")
-                            .font(.system(size: 14, weight: .bold))
-                    }
-                    .padding(.vertical, 4)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("cryptonews.net")
-                            .foregroundColor(.secondary)
-                            .fontWeight(.semibold)
-                            .textCase(.uppercase)
-                            .font(.system(size: 10))
-                        
-                        Text("Coin Center Sues US Treasury Over Tax Reporting Rule")
-                            .font(.system(size: 14))
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.leading)
-                    }
-                    .padding(.vertical, 4)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("cryptonews.net")
-                            .foregroundColor(.secondary)
-                            .fontWeight(.semibold)
-                            .textCase(.uppercase)
-                            .font(.system(size: 10))
-                        
-                        Text("Bitcoin's Hashrate Hits an All-Time High Nearing 300 Exahash per Second")
-                            .font(.system(size: 14))
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.leading)
-                    }
-                    .padding(.vertical, 4)
-                }
+                self.coinSummary
+                self.coinActions
+                self.coinNews
             }
             .task {
                 do {
@@ -182,6 +65,148 @@ public struct CoinDetailView: View {
 }
 
 extension CoinDetailView {
+    
+    //MARK: - Coin summary
+    
+    private var coinSummary: some View {
+        Section {
+            VStack(spacing: 8) {
+                self.priceStats
+                self.priceCharts
+                SegmentPicker(
+                    content: [
+                        "1d", "1w", "1m", "1y", "5y"
+                    ],
+                    selection: self.$selected
+                )
+                .padding(.vertical)
+                self.coinStats
+            }
+        }
+    }
+    
+    //MARK: - Coin Stats
+    
+    private var coinStats: some View {
+        ZStack {
+            if let data = self.cryptoService.coinDetailData {
+                HStack {
+                    self.getStatsColums(
+                        for: [
+                            "24H": data.the24HVolume ?? "",
+                            "Max": String(data.doubleSparkLine.max() ?? 0),
+                            "Min": String(data.doubleSparkLine.min() ?? 0)
+                        ]
+                    )
+                    
+                    Divider()
+                        .padding(2)
+                    
+                    self.getStatsColums(
+                        for: [
+                            "Cap": data.marketCap ?? "",
+                            "All Time": data.allTimeHigh?.price ?? "",
+                            "Rank": data.rank?.description ?? ""
+                        ]
+                    )
+                }
+                .padding(.vertical, 4)
+            }
+        }
+        .animation(.default, value: self.cryptoService.coinDetailData == nil)
+    }
+    
+    //MARK: - Coin stats colums
+    
+    private func getStatsColums(
+        for content: [String: String]
+    ) -> some View {
+        VStack {
+            ForEach(content.sorted(by: >), id: \.key) { title, value in
+                HStack {
+                    Text(LocalizedStringKey(title))
+                    Spacer()
+                    Text(String(format: "%.2f", Double(value) ?? 0))
+                        .foregroundColor(.secondary)
+                }
+                .font(.system(size: 12, weight: .semibold))
+                .padding(.vertical, 4)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    //MARK: - Coin actions
+    
+    private var coinActions: some View {
+        Section {
+            HStack {
+                Label {
+                    Text("Send")
+                } icon: {
+                    Image(systemName: "arrow.uturn.right")
+                }
+                .foregroundColor(.primaryBlue)
+                .font(.system(size: 16, weight: .semibold))
+                .frame(maxWidth: .infinity)
+                .frame(height: 42)
+                .background(Color.primaryBlue.opacity(0.125))
+                .cornerRadius(12)
+                
+                Text("Buy \(self.data.symbol ?? "")")
+                    .foregroundColor(.primaryBlue)
+                    .font(.system(size: 16, weight: .semibold))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 42)
+                    .background(Color.primaryBlue.opacity(0.125))
+                    .cornerRadius(12)
+            }
+            .padding(.vertical, 4)
+        }
+    }
+    
+    //MARK: - Coin news
+    
+    private var coinNews: some View {
+        Section {
+            Toggle(isOn: .constant(true)) {
+                Text("News")
+                    .font(.system(size: 14, weight: .bold))
+            }
+            .padding(.vertical, 4)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("cryptonews.net")
+                    .foregroundColor(.secondary)
+                    .fontWeight(.semibold)
+                    .textCase(.uppercase)
+                    .font(.system(size: 10))
+                
+                Text("Coin Center Sues US Treasury Over Tax Reporting Rule")
+                    .font(.system(size: 14))
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+            }
+            .padding(.vertical, 4)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("cryptonews.net")
+                    .foregroundColor(.secondary)
+                    .fontWeight(.semibold)
+                    .textCase(.uppercase)
+                    .font(.system(size: 10))
+                
+                Text("Bitcoin's Hashrate Hits an All-Time High Nearing 300 Exahash per Second")
+                    .font(.system(size: 14))
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+            }
+            .padding(.vertical, 4)
+        }
+    }
+    
+    //MARK: - Price stats
+    
     private var priceStats: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Current price")
@@ -207,46 +232,32 @@ extension CoinDetailView {
         .padding(.top)
     }
     
-    //TODO: CoreUI
+    //MARK: - Price charts
     
-    //    @ViewBuilder
-    //    private var currentStats: some View {
-    //        if let data = self.cryptoService.coinDetailData {
-    //            HStack(spacing: 0) {
-    //                VStack(alignment: .leading, spacing: 2) {
-    //                    self.currentStatsPosition(name: "Open", value: data.allTimeHigh?.price ?? "")
-    //                    self.currentStatsPosition(name: "Max", value: data.sparkline?.max() ?? "")
-    //                    self.currentStatsPosition(name: "Min", value: data.sparkline?.min() ?? "")
-    //                }
-    //                Spacer()
-    //                Divider()
-    //                Spacer()
-    //                VStack(alignment: .leading, spacing: 2) {
-    //                    self.currentStatsPosition(name: "Cap", value: data.marketCap ?? "")
-    //                    self.currentStatsPosition(name: "24h", value: data.the24HVolume ?? "")
-    //                    self.currentStatsPosition(name: "Rank", value: data.rank?.description ?? "")
-    //                }
-    //            }
-    //            .padding(.horizontal)
-    //        }
-    //    }
-    //
-    //    private func currentStatsPosition(
-    //        name: String,
-    //        value: String
-    //    ) -> some View {
-    //        HStack(spacing: 4) {
-    //            Text(LocalizedStringKey(name))
-    //                .foregroundColor(.secondary)
-    //            Text(Double(value) ?? 0, format: .currency(code: "USD"))
-    //        }
-    //        .font(.system(size: 14, weight: .medium))
-    //    }
+    private var priceCharts: some View {
+        ZStack {
+            if let sparkline = self.cryptoService.coinDetailData?.sparkline {
+                let sparklineData = sparkline.map { Double($0) ?? 0 }
+                ChartView(
+                    for: sparklineData,
+                    isShowingPrice: false
+                )
+                .padding(.top, 24)
+            } else {
+                ProgressView()
+            }
+        }
+        .frame(height: 164)
+    }
+    
+    //MARK: - Principal tab item
     
     private var navigationPrincipal: some View {
         Text(self.data.name ?? "")
             .font(.system(size: 16, weight: .semibold))
     }
+    
+    //MARK: - Trailing tab item
     
     private var navigationTrailing: some View {
         Button("") {
@@ -254,6 +265,8 @@ extension CoinDetailView {
         }
         .buttonStyle(.dismiss)
     }
+    
+    //MARK: - Leading tab item
     
     private var navigationLeading: some View {
         Image(self.data.symbol ?? "")
