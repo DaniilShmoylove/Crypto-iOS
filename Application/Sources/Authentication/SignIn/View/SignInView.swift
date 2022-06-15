@@ -76,8 +76,16 @@ extension SignInView {
                 .opacity(self.isAppear ? 1 : 0)
             
             Text("PIN's do not match. Try it again")
-                .opacity(self.signInViewModel.isPINError && self.signInViewModel.createPIN.count == 0 ? 1 : 0)
-                .animation(.default, value: self.signInViewModel.isPINError && self.signInViewModel.createPIN.count == 0)
+                .opacity(
+                    self.signInViewModel.isPINError &&
+                    self.signInViewModel.createPIN.count == 0 ?
+                    1 : 0
+                )
+                .animation(
+                    .default,
+                    value: self.signInViewModel.isPINError &&
+                    self.signInViewModel.createPIN.count == 0
+                )
         }
         .foregroundColor(.secondary)
         .font(.system(size: 16, weight: .medium))
