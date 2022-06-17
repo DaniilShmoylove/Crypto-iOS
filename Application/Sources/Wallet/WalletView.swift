@@ -27,6 +27,13 @@ public struct WalletView: View {
             .onChange(of: self.networkService.status) { newValue in
                 self.cryptoService.reachable(for: newValue)
             }
+            .task {
+                do {
+                    try self.cryptoService.fetchAllCurrentMetaData()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
     }
 }
 

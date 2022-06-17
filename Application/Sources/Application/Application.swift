@@ -10,111 +10,84 @@ import Authentication
 import CoreUI
 import Wallet
 import Resources
+import Core
 import Services
+import UserProfile
 
 public struct Application: View {
     
-    @AppStorage("current_tab") private var currentTab = 0
+    @AppStorage(AppKeys.Application.tabviewSelection) private var currentTab: CurrentScreen = .wallet
     @StateObject private var networkService = NetworkService.shared
+    @StateObject private var authenticationViewModel = AuthenticationViewModel()
     
     public init() { }
     
     public var body: some View {
         ZStack {
-//            if true {
-                self.authentication
-//            } else {
-//                self.application
-//            }
-        }
-    }
-}
-
-extension Application {
-    
-    //MARK: - Application View
-    
-    private var application: some View {
-        NavigationView {
-            VStack {
-                
-                //MARK: - TabView with page style
-                
-                TabView(selection: self.$currentTab) {
-                    WalletView().tag(0)
-                    Text("View - \(1)").tag(1)
-                    Text("View - \(2)").tag(2)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .never))
-                
-                //MARK: - TabView with buttons
-                
-                BarView(
-                    currentTab: self.$currentTab,
-                    tabBarContent: [
-                        "bag",
-                        "circle.grid.2x2.fill",
-                        "person.fill"
-                    ]
-                )
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
+            if self.authenticationViewModel.isUnlocked {
+                NavigationView {
+                    VStack {
                         
-                    } label: {
+                        //MARK: - TabView with page style
                         
-                        //MARK: - Button label
-                        
-                        VStack {
-                            Image(systemName: "bell.badge")
-                                .symbolRenderingMode(.palette)
-                                .foregroundStyle(
-                                    self.networkService.status == .notReachable ? .gray : Color.primaryRed,
-                                    .gray
-                                )
-                                .font(.system(size: 14, weight: .heavy))
-                                .frame(maxWidth: .infinity)
-                                .scaleEffect(self.networkService.status == .notReachable ? 0.85 : 1)
-                                .animation(.default, value: self.networkService.status)
+                        TabView(selection: self.$currentTab) {
+                            
+                            //Wallet
+                            
+                            WalletView().tag(CurrentScreen.wallet)
+                            
+                            //Summary
+                            
+                            Text("View - \(1)").tag(CurrentScreen.summary)
+                            
+                            //User profile
+                            
+                            UserProfileView().tag(CurrentScreen.profile)
+                                .environmentObject(self.authenticationViewModel)
                         }
-                        .padding(6)
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        
+                        //MARK: - TabView with buttons
+                        
+                        BarView(
+                            currentTab: self.$currentTab,
+                            tabBarContent: [
+                                "bag",
+                                "circle.grid.2x2.fill",
+                                "person.fill"
+                            ]
+                        )
                     }
-                    .buttonStyle(.tabView)
-                    .disabled(self.networkService.status == .notReachable)
-                }
-                
-                ToolbarItem(placement: .principal) {
-                    Text("Home")
-                        .font(.system(size: 18, weight: .bold))
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
                         
-                    } label: {
+                        //MARK: - Navigation bar leading tab item
                         
-                        //MARK: - Button label
-                        
-                        VStack {
-                            Image(systemName: "qrcode.viewfinder")
-                                .foregroundColor(.gray)
-                                .font(.system(size: 14, weight: .heavy))
-                                .frame(maxWidth: .infinity)
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            NotificationTabItemButtonView()
                         }
-                        .padding(6)
+                        
+                        //MARK: - Navigation bar leading tab item
+                        
+                        ToolbarItem(placement: .principal) {
+                            PrincipalTabItemView(for: self.currentTab)
+                        }
+                        
+                        //MARK: - Navigation bar leading tab item
+                        
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            QRCodeTabItemButtonView()
+                        }
                     }
-                    .buttonStyle(.tabView)
                 }
+            } else {
+                
+                //MARK: - Auth and SignIn
+                
+                AuthenticationView(viewModel: self.authenticationViewModel)
+                    .transition(.move(edge: .bottom))
             }
         }
-    }
-    
-    //MARK: - Authentication View
-    
-    private var authentication: some View {
-        WelcomeView { }
-            .transition(.move(edge: .bottom))
+        .animation(.default, value: self.authenticationViewModel.isUnlocked)
     }
 }

@@ -14,10 +14,24 @@
 		899837D12816DBE60022168F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 899837D32816DBE60022168F /* Localizable.strings */; };
 		899837D52816E5480022168F /* metaOrb.usdz in Resources */ = {isa = PBXBuildFile; fileRef = 899837D42816E4E60022168F /* metaOrb.usdz */; };
 		A59DE27E2858F85F0065A587 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A59DE27D2858F85F0065A587 /* GoogleService-Info.plist */; };
+		A5DB86C2285A326F002B9576 /* AppResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DB86C1285A326F002B9576 /* AppResolver.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		A5DB86D4285A531D002B9576 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		899837BA2816D3840022168F /* Coin Market.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coin Market.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		899837BA2816D3840022168F /* Coin Wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Coin Wallet.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		899837BD2816D3840022168F /* Crypto_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto_iOSApp.swift; sourceTree = "<group>"; };
 		899837C12816D3860022168F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		899837C42816D3860022168F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -25,6 +39,9 @@
 		899837D22816DBE60022168F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		899837D42816E4E60022168F /* metaOrb.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = metaOrb.usdz; sourceTree = "<group>"; };
 		A59DE27D2858F85F0065A587 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A5DB86C1285A326F002B9576 /* AppResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppResolver.swift; sourceTree = "<group>"; };
+		A5DB86C8285A531D002B9576 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		A5EC41D0285B408800637C90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,7 +69,7 @@
 		899837BB2816D3840022168F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				899837BA2816D3840022168F /* Coin Market.app */,
+				899837BA2816D3840022168F /* Coin Wallet.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,12 +77,14 @@
 		899837BC2816D3840022168F /* Crypto-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				A5EC41D0285B408800637C90 /* Info.plist */,
 				A59DE27D2858F85F0065A587 /* GoogleService-Info.plist */,
 				899837BD2816D3840022168F /* Crypto_iOSApp.swift */,
 				899837C12816D3860022168F /* Assets.xcassets */,
 				899837D42816E4E60022168F /* metaOrb.usdz */,
 				899837C32816D3860022168F /* Preview Content */,
 				899837D32816DBE60022168F /* Localizable.strings */,
+				A5DB86C1285A326F002B9576 /* AppResolver.swift */,
 			);
 			path = "Crypto-iOS";
 			sourceTree = "<group>";
@@ -81,6 +100,7 @@
 		899837CC2816D4C90022168F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A5DB86C8285A531D002B9576 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -95,6 +115,7 @@
 				899837B62816D3840022168F /* Sources */,
 				899837B72816D3840022168F /* Frameworks */,
 				899837B82816D3840022168F /* Resources */,
+				A5DB86D4285A531D002B9576 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -105,7 +126,7 @@
 				899837CD2816D4C90022168F /* Application */,
 			);
 			productName = "Crypto-iOS";
-			productReference = 899837BA2816D3840022168F /* Coin Market.app */;
+			productReference = 899837BA2816D3840022168F /* Coin Wallet.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -115,7 +136,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1330;
 				TargetAttributes = {
 					899837B92816D3840022168F = {
@@ -162,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				899837BE2816D3840022168F /* Crypto_iOSApp.swift in Sources */,
+				A5DB86C2285A326F002B9576 /* AppResolver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,19 +326,21 @@
 				DEVELOPMENT_TEAM = 6BU4S7J3BN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Crypto-iOS/Info.plist";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock with Face ID";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.DaniilShmoylove.Crypto-iOS";
-				PRODUCT_NAME = "Coin Market";
+				PRODUCT_NAME = "Coin Wallet";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -334,19 +358,21 @@
 				DEVELOPMENT_TEAM = 6BU4S7J3BN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Crypto-iOS/Info.plist";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "Unlock with Face ID";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.DaniilShmoylove.Crypto-iOS";
-				PRODUCT_NAME = "Coin Market";
+				PRODUCT_NAME = "Coin Wallet";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

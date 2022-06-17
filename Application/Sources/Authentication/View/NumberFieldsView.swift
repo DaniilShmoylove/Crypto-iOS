@@ -11,17 +11,20 @@ struct NumberFieldsView: View {
     init(
         for value: Binding<String>,
         isShowingBiometricButton: Bool = true,
-        backwardAction: @escaping () -> () = { }
+        backwardAction: @escaping () -> () = { },
+        biometricAction: @escaping () -> () = { }
     ) {
         self._value = value
         self.isShowingBiometricButton = isShowingBiometricButton
         self.backwardAction = backwardAction
+        self.biometricAction = biometricAction
     }
     
     @Binding private var value: String
     
     private let isShowingBiometricButton: Bool
     private let backwardAction: () -> ()
+    private let biometricAction: () -> ()
     
     var body: some View {
         LazyVGrid(
@@ -42,7 +45,7 @@ struct NumberFieldsView: View {
             }
             
             Button {
-                
+                self.biometricAction()
             } label: {
                 Image(systemName: "faceid")
             }
@@ -67,7 +70,7 @@ struct NumberFieldsView: View {
             }
         }
         .buttonStyle(.entry)
-        .tint(.primaryBlue)
+        .tint(.white)
         .padding([.vertical, .bottom])
     }
 }

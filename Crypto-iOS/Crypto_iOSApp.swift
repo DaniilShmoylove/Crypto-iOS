@@ -9,6 +9,7 @@ import SwiftUI
 import Application
 import Services
 import FirebaseCore
+import GoogleSignIn
 
 @main
 struct Crypto_iOSApp: App {
@@ -45,5 +46,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         self.networkService.listenToReachability()
         return true
+    }
+    
+    @available(iOS 9.0, *)
+    func application(
+        _ application: UIApplication, open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any]
+    ) -> Bool {
+        
+        //MARK: - Google signin configure
+        
+        return GIDSignIn.sharedInstance.handle(url)
     }
 }
