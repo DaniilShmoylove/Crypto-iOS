@@ -13,7 +13,7 @@ import Services
 public struct WalletView: View {
     public init() { }
     
-    @StateObject private var cryptoService = CryptoService()
+    @StateObject private var walletViewModel = WalletViewModel()
     @StateObject private var networkService = NetworkService.shared
     
     @State private var isShowingStats: Bool = false
@@ -24,12 +24,14 @@ public struct WalletView: View {
         //MARK: - User coins inventory
         
         self.content
-            .onChange(of: self.networkService.status) { newValue in
-                self.cryptoService.reachable(for: newValue)
+        
+            .onChange(of: self.networkService.status) {
+                self.walletViewModel.reachable(for: $0)
             }
+        
             .task {
                 do {
-                    try self.cryptoService.fetchAllCurrentMetaData()
+                    try await self.walletViewModel.fetchAllCurrentMetaData()
                 } catch {
                     print(error.localizedDescription)
                 }
@@ -68,7 +70,7 @@ extension WalletView {
             self.balanceHeader
                 .listSectionSeparator(.hidden, edges: .all)
             
-            if let data = self.cryptoService.allCurrentMetaData {
+            if let data = self.walletViewModel.allCurrentMetaData {
                 ForEach(data, id: \.self) { item in
                     Button {
                         self.isShowingStats.toggle()
@@ -102,13 +104,13 @@ extension WalletView {
                     .sheet(isPresented: self.$isShowingStats) {
                         CoinDetailView(
                             data: item,
-                            cryptoService: self.cryptoService
+                            walletViewModel: self.walletViewModel 
                         )
                     }
                 }
             }
         }
-        .animation(.default, value: self.cryptoService.allCurrentMetaData?.count)
+        .animation(.default, value: self.walletViewModel.allCurrentMetaData?.count)
         .listStyle(.inset)
     }
     

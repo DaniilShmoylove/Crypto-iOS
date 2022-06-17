@@ -7,6 +7,7 @@
 
 import Resolver
 import Services
+import ApiClient
 
 extension Resolver: ResolverRegistering {
     
@@ -19,6 +20,21 @@ extension Resolver: ResolverRegistering {
         
         register { AuthenticationServiceImpl() }
             .implements(AuthenticationService.self)
+        
+        //MARK: - CryptoService
+        
+        register { CryptoServiceImpl() }
+            .implements(CryptoService.self)
+        
+        //MARK: - ApiClient
+        
+        register { ApiClient() }
+            .implements(ApiClientProtocol.self)
+        
+        //MARK: - CryptoRepository
+        
+        register { CryptoRepositoryImpl() }
+            .implements(CryptoRepository.self)
     }
     
     //MARK: - Register all repositories

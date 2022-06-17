@@ -15,18 +15,18 @@ public struct CoinDetailView: View {
     
     @Environment(\.presentationMode) private var presentationMode
     
-    @ObservedObject private var cryptoService: CryptoService
+    @ObservedObject private var walletViewModel: WalletViewModel
     
     @State private var selected: Int = 0
     
     private let data: Coin
     
-    public init(
+    init(
         data: Coin,
-        cryptoService: CryptoService
+        walletViewModel: WalletViewModel
     ) {
         self.data = data
-        self.cryptoService = cryptoService
+        self.walletViewModel = walletViewModel
     }
     
     public var body: some View {
@@ -42,12 +42,12 @@ public struct CoinDetailView: View {
                     //MARK: - Appear fetch current meta data
                     
                     guard let uuid = self.data.uuid else { return }
-                    try self.cryptoService.fetchCoinData(for: uuid)
+                    try await self.walletViewModel.fetchCoinData(for: uuid)
                 } catch {
                     print(error.localizedDescription)
                 }
             }
-            .onDisappear { self.cryptoService.coinDetailData = nil }
+            .onDisappear { self.walletViewModel.clearCoinDetailData() }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -89,7 +89,7 @@ extension CoinDetailView {
     
     private var coinStats: some View {
         ZStack {
-            if let data = self.cryptoService.coinDetailData {
+            if let data = self.walletViewModel.coinDetailData {
                 HStack {
                     self.getStatsColums(
                         for: [
@@ -113,7 +113,7 @@ extension CoinDetailView {
                 .padding(.vertical, 4)
             }
         }
-        .animation(.default, value: self.cryptoService.coinDetailData == nil)
+        .animation(.default, value: self.walletViewModel.coinDetailData == nil)
     }
     
     //MARK: - Coin stats colums
@@ -236,7 +236,7 @@ extension CoinDetailView {
     
     private var priceCharts: some View {
         ZStack {
-            if let sparkline = self.cryptoService.coinDetailData?.sparkline {
+            if let sparkline = self.walletViewModel.coinDetailData?.sparkline {
                 let sparklineData = sparkline.map { Double($0) ?? 0 }
                 ChartView(
                     for: sparklineData,

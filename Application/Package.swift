@@ -34,6 +34,9 @@ let package = Package(
         .library(
             name: "UserProfile",
             targets: ["UserProfile"]),
+        .library(
+            name: "ApiClient",
+            targets: ["ApiClient"]),
     ],
     dependencies: [
         .package(
@@ -91,6 +94,7 @@ let package = Package(
             dependencies: [
                 "Core",
                 "SharedModel",
+                "ApiClient",
                 .product(name: "Alamofire", package: "Alamofire"),
                 .product(name: "FirebaseAuth", package: "Firebase"),
                 .product(name: "GoogleSignIn", package: "GoogleSignIn"),
@@ -102,6 +106,7 @@ let package = Package(
                 "CoreUI",
                 "Services",
                 "SharedModel",
+                .product(name: "Resolver", package: "Resolver"),
             ]),
         .target(
             name: "UserProfile",
@@ -115,6 +120,11 @@ let package = Package(
                 .product(name: "Alamofire", package: "Alamofire"),
             ]),
         .target(name: "SharedModel"),
+        .target(
+            name: "ApiClient",
+            dependencies: [
+                .product(name: "Alamofire", package: "Alamofire"),
+            ]),
         .testTarget(
             name: "ApplicationTests",
             dependencies: ["Application"]),

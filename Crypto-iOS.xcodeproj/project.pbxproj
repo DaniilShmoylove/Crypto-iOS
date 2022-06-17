@@ -338,7 +338,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.7;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.DaniilShmoylove.Crypto-iOS";
 				PRODUCT_NAME = "Coin Wallet";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -370,7 +370,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.7;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.DaniilShmoylove.Crypto-iOS";
 				PRODUCT_NAME = "Coin Wallet";
 				SWIFT_EMIT_LOC_STRINGS = YES;
