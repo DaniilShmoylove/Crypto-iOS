@@ -9,18 +9,14 @@ import SwiftUI
 import Authentication
 import CoreUI
 import Wallet
-import Resources
 import Core
-import Services
 import UserProfile
 
 public struct Application: View {
+    public init() { }
     
     @AppStorage(AppKeys.Application.tabviewSelection) private var currentTab: CurrentScreen = .wallet
-    @StateObject private var networkService = NetworkService.shared
     @StateObject private var authenticationViewModel = AuthenticationViewModel()
-    
-    public init() { }
     
     public var body: some View {
         ZStack {
