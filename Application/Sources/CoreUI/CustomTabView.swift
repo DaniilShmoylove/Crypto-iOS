@@ -10,12 +10,12 @@ import Resources
 
 public struct BarView: View {
     
-    @Binding public var currentTab: Int
+    @Binding public var currentTab: CurrentScreen
     
     public var tabBarContent: [String]
     
     public init(
-        currentTab: Binding<Int>,
+        currentTab: Binding<CurrentScreen>,
         tabBarContent: [String]
     ) {
         self._currentTab = currentTab
@@ -45,11 +45,20 @@ public struct BarView: View {
     }
 }
 
+
+//MARK: - Current screen enum
+
+public enum CurrentScreen: Int, CodingKey {
+    case wallet = 0
+    case summary = 1
+    case profile = 2
+}
+
 fileprivate struct BarItemView: View {
     
     //MARK: - State
     
-    @Binding var currentTab: Int
+    @Binding var currentTab: CurrentScreen
     
     let barItemName: String
     let tab: Int
@@ -60,7 +69,7 @@ fileprivate struct BarItemView: View {
             //MARK: - Move to current tab
             
             withAnimation {
-                self.currentTab = tab
+                self.currentTab = CurrentScreen(rawValue: self.tab) ?? .summary
             }
             
         } label: {
@@ -70,7 +79,7 @@ fileprivate struct BarItemView: View {
             VStack {
                 Image(systemName: self.barItemName)
                     .foregroundColor(
-                        self.currentTab == tab ?
+                        self.currentTab.rawValue == tab ?
                         Color.primary : Color.secondary
                     )
                     .font(.system(size: 22, weight: .heavy))
