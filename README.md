@@ -13,3 +13,5 @@
 - [Alamofire](https://github.com/Alamofire/Alamofire)
 - [Resolver](https://github.com/hmlongco/Resolver)
 - [GoogleSignIn](https://github.com/google/GoogleSignIn-iOS.git)
+- AuthenticationServices
+- LocalAuthentication
