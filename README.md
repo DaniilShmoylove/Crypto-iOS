@@ -9,7 +9,7 @@
 - SwiftUI
 - Modular architecture
 - MVVM
-- Firebase
+- [Firebase](https://github.com/firebase/firebase-ios-sdk.git)
 - [Alamofire](https://github.com/Alamofire/Alamofire)
-- Resolver
-- GoogleSignIn
+- [Resolver](https://github.com/hmlongco/Resolver)
+- [GoogleSignIn](https://github.com/google/GoogleSignIn-iOS.git)
