@@ -118,7 +118,7 @@ extension WalletView {
     
     private var inventoryPicker: some View {
         SegmentPicker(
-            content: ["Portfolio", "Favorite"],
+            content: ["wallet_portfolio_title", "wallet_favorite_title"],
             selection: self.$selectedInventory,
             segmentColor: Color(uiColor: .systemGray6)
         )

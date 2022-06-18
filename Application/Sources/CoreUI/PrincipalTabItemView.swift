@@ -33,11 +33,11 @@ public struct PrincipalTabItemView: View {
     private var getTitle: some View {
         switch self.currentScreen {
         case .wallet:
-            Text("Home")
+            Text("coreui_home_title")
         case .summary:
-            Text("Summary")
+            Text("coreui_summary_title")
         case .profile:
-            Text("Profile")
+            Text("coreui_profile_title")
         }
     }
 }

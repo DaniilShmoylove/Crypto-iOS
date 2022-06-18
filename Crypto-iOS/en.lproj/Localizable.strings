@@ -6,9 +6,29 @@
   
 */
 
-//MARK: - Auth
-"AppWelcomeTitle" = "Coin Wallet\n Brand to Invest";
-"AppWelcomeSubtitle" = "Track market position in real time \n and make your investment easily";
-"AppWelcomeStartButton" = "Get Started";
-"EnterPINTitle" = "Enter PIN to Authorization";
-"ForgotPINTitle" = "Forgot PIN";
+//MARK: - Authentication
+
+"authentication_welcome_title" = "Coin Wallet\n Brand to Invest";
+"authentication_welcome_subtitle" = "Track market position in real time \n and make your investment easily";
+"authentication_signin_with_google" = "Sign in with Google";
+"authentication_signin_with_apple" = "Sign in with Apple";
+"authentication_pin_enter" = "Enter PIN";
+"authentication_pin_confirm" = "Confirm PIN";
+"authentication_pin_create" = "Create PIN";
+"authentication_pin_error" = "PIN's do not match. Try it again";
+"authentication_pin_forgot" = "Forgot PIN";
+
+//MARK: - CoreUI
+
+"coreui_home_title" = "Home";
+"coreui_summary_title" = "Summary";
+"coreui_profile_title" = "Profile";
+
+//MARK: - Wallet
+
+"wallet_portfolio_title" = "Portfolio";
+"wallet_favorite_title" = "Favorite";
+"wallet_current_price_title" = "Current price";
+"wallet_action_buy_%@" = "Buy %@";
+"wallet_action_send" = "Send";
+"wallet_coin_news_title" = "News";

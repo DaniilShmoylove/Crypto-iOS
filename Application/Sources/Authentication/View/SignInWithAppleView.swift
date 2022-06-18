@@ -32,7 +32,7 @@ struct SignInWithAppleButtonView: View  {
     private var signInButtonView: some View {
         HStack {
             Image(systemName: "applelogo")
-            Text("Sign in with Apple")
+            Text("authentication_signin_with_apple")
         }
         .foregroundColor(.black)
         .font(.system(size: 16, weight: .bold))

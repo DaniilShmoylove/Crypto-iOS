@@ -31,4 +31,8 @@ public enum AppUserDefaultsKeys {
         public static let isAuthenticated = settingsKey("authentication.authenticated.status")
         public static let PIN = settingsKey("authentication.PIN.code")
     }
+    
+    public enum API {
+        public static let key = "coinrankinge264dc0eb9797c22e0cde8c77daf9dcce06f46e76938c66e"
+    }
 }

@@ -142,7 +142,7 @@ extension CoinDetailView {
         Section {
             HStack {
                 Label {
-                    Text("Send")
+                    Text("wallet_action_send")
                 } icon: {
                     Image(systemName: "arrow.uturn.right")
                 }
@@ -153,7 +153,7 @@ extension CoinDetailView {
                 .background(Color.primaryBlue.opacity(0.125))
                 .cornerRadius(12)
                 
-                Text("Buy \(self.data.symbol ?? "")")
+                Text("wallet_action_buy_\(self.data.symbol ?? "")")
                     .foregroundColor(.primaryBlue)
                     .font(.system(size: 16, weight: .semibold))
                     .frame(maxWidth: .infinity)
@@ -170,7 +170,7 @@ extension CoinDetailView {
     private var coinNews: some View {
         Section {
             Toggle(isOn: .constant(true)) {
-                Text("News")
+                Text("wallet_coin_news_title")
                     .font(.system(size: 14, weight: .bold))
             }
             .padding(.vertical, 4)
@@ -209,7 +209,7 @@ extension CoinDetailView {
     
     private var priceStats: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Current price")
+            Text("wallet_current_price_title")
                 .font(.system(size: 12, weight: .medium))
             
             if let price = self.data.price {

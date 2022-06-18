@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import Core
 
 internal enum CryptoRouter {
     
@@ -24,7 +25,7 @@ internal enum CryptoRouter {
     //MARK: - Headers
     
     private var headers: HTTPHeaders { [
-        "x-access-token": "coinrankinge264dc0eb9797c22e0cde8c77daf9dcce06f46e76938c66e"
+        "x-access-token": AppKeys.API.key   
     ] }
     
     //MARK: - Get path
