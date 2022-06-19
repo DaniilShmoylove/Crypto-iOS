@@ -17,8 +17,6 @@ public struct CoinDetailView: View {
     
     @ObservedObject private var walletViewModel: WalletViewModel
     
-    @State private var selected: Int = 0
-    
     private let data: Coin
     
     init(
@@ -85,7 +83,7 @@ extension CoinDetailView {
                     content: [
                         "1d", "1w", "1m", "1y", "5y"
                     ],
-                    selection: self.$selected
+                    selection: .constant(4)
                 )
                 .padding(.vertical)
                 self.coinStats

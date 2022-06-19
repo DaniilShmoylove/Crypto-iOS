@@ -18,7 +18,6 @@ public struct WalletView: View {
     @StateObject private var networkService = NetworkService.shared
     
     @State private var selectedCoin: Coin? = nil
-    @State private var selectedInventory: Int = 1
     
     public var body: some View {
         List {
@@ -31,7 +30,7 @@ public struct WalletView: View {
             //MARK: - User coins inventory
             
             if let data = self.walletViewModel.allCurrentMetaData {
-                ForEach(data, id: \.self) { item in
+                ForEach(data, id: \.id) { item in
                     Button {
                         self.selectedCoin = item
                     } label: {
@@ -52,6 +51,7 @@ public struct WalletView: View {
                     .foregroundColor(.secondary)
             }
         }
+        .animation(.easeOut, value: self.walletViewModel.allCurrentMetaData)
         .listStyle(.inset)
         
         //MARK: - Check network reachability status
@@ -107,7 +107,7 @@ extension WalletView {
     private var inventoryPicker: some View {
         SegmentPicker(
             content: ["wallet_portfolio_title", "wallet_favorite_title"],
-            selection: .constant(4),
+            selection: .constant(1),
             segmentColor: Color(uiColor: .systemGray6)
         )
         .padding(.vertical, 22)
