@@ -2,9 +2,6 @@
 ![](https://img.shields.io/badge/iOS-15.0+-blue.svg)
 ![](https://img.shields.io/badge/-SwiftUI-red.svg)
 
-iOS App. Coin tracker, realtime current price, charts, stats. 
-Trend stack SPM, MVVM, SwiftUI, Async/Await 
-
 <img src="https://raw.githubusercontent.com/DaniilShmoylove/Crypto-iOS/feature/authentication/Crypto-iOS/Assets.xcassets/AppMock.imageset/AppMock.jpg?token=GHSAT0AAAAAABVB4KEDO3VVO76HVDNYGSPUYVMVLZQ" />
 
 # Technology
@@ -18,3 +15,4 @@ Trend stack SPM, MVVM, SwiftUI, Async/Await
 - [GoogleSignIn](https://github.com/google/GoogleSignIn-iOS.git)
 - AuthenticationServices
 - LocalAuthentication
+- Async/Await 
