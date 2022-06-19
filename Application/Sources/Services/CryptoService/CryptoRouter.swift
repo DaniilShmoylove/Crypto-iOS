@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import Core
 
 internal enum CryptoRouter {
     
@@ -24,7 +25,7 @@ internal enum CryptoRouter {
     //MARK: - Headers
     
     private var headers: HTTPHeaders { [
-        "x-access-token": "coinrankinge264dc0eb9797c22e0cde8c77daf9dcce06f46e76938c66e"
+        "x-access-token": AppKeys.API.key   
     ] }
     
     //MARK: - Get path
@@ -59,7 +60,7 @@ internal enum CryptoRouter {
     
     //MARK: - Get parameters
     
-    private var parameters: [String: [String]] {
+    private var parameters: Parameters {
         switch self {
         case .getCoinData:
             return [
@@ -96,7 +97,7 @@ extension CryptoRouter: URLRequestConvertible {
         var request = URLRequest(url: url)
         request.method = self.method
         request.headers = self.headers
-        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(self.parameters, into: request)
+        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(self.parameters as? [String: [String]], into: request)
         return request
     }
 }

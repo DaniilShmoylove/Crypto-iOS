@@ -9,6 +9,7 @@ import SwiftUI
 import CoreUI
 import Resources
 import Services
+import SharedModel
 
 public struct WalletView: View {
     public init() { }
@@ -16,26 +17,67 @@ public struct WalletView: View {
     @StateObject private var walletViewModel = WalletViewModel()
     @StateObject private var networkService = NetworkService.shared
     
-    @State private var isShowingStats: Bool = false
-    @State private var selectedInventory: Int = 1
+    @State private var selectedCoin: Coin? = nil
     
     public var body: some View {
-        
-        //MARK: - User coins inventory
-        
-        self.content
-        
-            .onChange(of: self.networkService.status) {
-                self.walletViewModel.reachable(for: $0)
-            }
-        
-            .task {
-                do {
-                    try await self.walletViewModel.fetchAllCurrentMetaData()
-                } catch {
-                    print(error.localizedDescription)
+        List {
+            
+            //MARK: - Balance title
+            
+            self.balanceHeader
+                .listSectionSeparator(.hidden, edges: .all)
+            
+            //MARK: - User coins inventory
+            
+            if let data = self.walletViewModel.allCurrentMetaData {
+                ForEach(data, id: \.id) { item in
+                    Button {
+                        self.selectedCoin = item
+                    } label: {
+                        CoinRowView(data: item)
+                            .padding(.vertical, 6)
+                    }
+                    .listSectionSeparator(.hidden, edges: .top)
+                    
+                    //MARK: - Coin context menu actions
+                    
+                    .contextMenu {
+                        CoinMenuView()
+                    }
                 }
+            } else if self.networkService.status == .notReachable {
+                Text("wallet_not_reachable_status")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.secondary)
             }
+        }
+        .animation(.easeOut, value: self.walletViewModel.allCurrentMetaData)
+        .listStyle(.inset)
+        
+        //MARK: - Check network reachability status
+        
+        .onChange(of: self.networkService.status) {
+            self.walletViewModel.reachable(for: $0)
+        }
+        
+        //MARK: - Fetch inventory data
+        
+        .task {
+            do {
+                try await self.walletViewModel.fetchAllCurrentMetaData()
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
+        //MARK: - Coin detail
+        
+        .sheet(item: self.$selectedCoin) { data in
+            CoinDetailView(
+                data: data,
+                walletViewModel: self.walletViewModel
+            )
+        }
     }
 }
 
@@ -60,66 +102,12 @@ extension WalletView {
         .frame(maxWidth: .infinity)
     }
     
-    //MARK: - Content
-    
-    private var content: some View {
-        List {
-            
-            //MARK: - User balance
-            
-            self.balanceHeader
-                .listSectionSeparator(.hidden, edges: .all)
-            
-            if let data = self.walletViewModel.allCurrentMetaData {
-                ForEach(data, id: \.self) { item in
-                    Button {
-                        self.isShowingStats.toggle()
-                    } label: {
-                        CoinRowView(data: item)
-                            .padding(.vertical, 6)
-                    }
-                    .listSectionSeparator(.hidden, edges: .top)
-                    .contextMenu {
-                        Label {
-                            Text("Order")
-                        } icon: {
-                            Image(systemName: "bag.badge.plus")
-                        }
-                        Label {
-                            Text("Swap")
-                        } icon: {
-                            Image(systemName: "rectangle.2.swap")
-                        }
-                        Label {
-                            Text("Send")
-                        } icon: {
-                            Image(systemName: "arrow.uturn.right")
-                        }
-                        Label {
-                            Text("To sell")
-                        } icon: {
-                            Image(systemName: "bag.badge.minus")
-                        }
-                    }
-                    .sheet(isPresented: self.$isShowingStats) {
-                        CoinDetailView(
-                            data: item,
-                            walletViewModel: self.walletViewModel 
-                        )
-                    }
-                }
-            }
-        }
-        .animation(.default, value: self.walletViewModel.allCurrentMetaData?.count)
-        .listStyle(.inset)
-    }
-    
-    //MARK: - Inventory picker 
+    //MARK: - Inventory picker
     
     private var inventoryPicker: some View {
         SegmentPicker(
-            content: ["Portfolio", "Favorite"],
-            selection: self.$selectedInventory,
+            content: ["wallet_portfolio_title", "wallet_favorite_title"],
+            selection: .constant(1),
             segmentColor: Color(uiColor: .systemGray6)
         )
         .padding(.vertical, 22)

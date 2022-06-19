@@ -15,7 +15,12 @@ import Core
 final public class AuthenticationViewModel: ObservableObject {
     public init() { }
     
+    //MARK: - AuthenticationService
+    
     @Injected private var authenticationService: AuthenticationService
+    
+    //MARK: - Variables
+    
     @Published private(set) var isAuthenticationLoad: Bool = false
     @Published private(set) var isPINError: Bool = false
     @Published public var isUnlocked: Bool = false

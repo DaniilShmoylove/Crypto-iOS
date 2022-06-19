@@ -21,7 +21,6 @@ public protocol AuthenticationService {
     func signWithGoogle() async throws
     func signOut() throws
     func getCurrentUser() throws -> User?
-    
     var isAuthenticated: Bool { get }
 }
 
@@ -59,6 +58,34 @@ final public class AuthenticationServiceImpl: AuthenticationService {
     
     public var isAuthenticated: Bool {
         Auth.auth().currentUser?.email != nil
+    }
+}
+
+//MARK: - Sign in with Google
+
+extension AuthenticationServiceImpl {
+    public func signWithGoogle() async throws {
+        let scenes = await UIApplication.shared.connectedScenes
+        guard  let windowScene = scenes.first as? UIWindowScene, let vc = await windowScene.windows.first?.rootViewController else {
+            return
+        }
+        
+        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
+        
+        let config = GIDConfiguration(clientID: clientID)
+        
+        let user = try await GIDSignIn.sharedInstance.signIn(
+            with: config,
+            presenting: vc
+        )
+        
+        guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
+        let credential = GoogleAuthProvider.credential(
+            withIDToken: idToken,
+            accessToken: authentication.accessToken
+        )
+        
+        try await self.signIn(with: credential)
     }
 }
 
@@ -142,35 +169,6 @@ extension AuthenticationServiceImpl {
             .joined()
         
         return hashString
-    }
-}
-
-//MARK: - Sign in with Google
-
-extension AuthenticationServiceImpl {
-    //    @MainActor
-    public func signWithGoogle() async throws {
-        let scenes = await UIApplication.shared.connectedScenes
-        guard  let windowScene = scenes.first as? UIWindowScene, let vc = await windowScene.windows.first?.rootViewController else {
-            return
-        }
-        
-        guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-        
-        let config = GIDConfiguration(clientID: clientID)
-        
-        let user = try await GIDSignIn.sharedInstance.signIn(
-            with: config,
-            presenting: vc
-        )
-        
-        guard let authentication = user?.authentication, let idToken = authentication.idToken else { return }
-        let credential = GoogleAuthProvider.credential(
-            withIDToken: idToken,
-            accessToken: authentication.accessToken
-        )
-        
-        try await self.signIn(with: credential)
     }
 }
 

@@ -23,7 +23,8 @@ public struct DataClass: Codable {
 
 // MARK: - Coin
 
-public struct Coin: Codable, Hashable {
+public struct Coin: Codable, Hashable, Identifiable {
+    public var id: String? { self.uuid }
     public let uuid, symbol, name, color: String?
     public let iconURL: String?
     public let marketCap, price, btcPrice: String?
@@ -33,7 +34,7 @@ public struct Coin: Codable, Hashable {
     public let sparkline: [String]?
     public let coinrankingURL: String?
     public let the24HVolume: String?
-
+    
     public enum CodingKeys: String, CodingKey {
         case uuid, symbol, name, color
         case iconURL = "iconUrl"

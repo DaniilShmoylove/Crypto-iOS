@@ -100,7 +100,7 @@ extension AuthenticationView {
     //Title of app name
     
     private var appTitleView: some View {
-        Text(LocalizedStringKey("AppWelcomeTitle"))
+        Text("authentication_welcome_title")
             .font(.system(size: 42, weight: .heavy))
             .foregroundColor(.white)
             .multilineTextAlignment(.center)
@@ -110,7 +110,7 @@ extension AuthenticationView {
     //Subtitle of app description
     
     private var appSubtitleView: some View {
-        Text(LocalizedStringKey("AppWelcomeSubtitle"))
+        Text("authentication_welcome_subtitle")
             .font(.system(size: 18, weight: .medium))
             .foregroundColor(.gray)
             .multilineTextAlignment(.center)
@@ -128,7 +128,7 @@ extension AuthenticationView {
                     .resizable()
                     .renderingMode(.template)
                     .frame(width: 20, height: 20)
-                Text("Sign in with Google")
+                Text("authentication_signin_with_google")
             }
             .foregroundColor(.black)
             .font(.system(size: 16, weight: .bold))

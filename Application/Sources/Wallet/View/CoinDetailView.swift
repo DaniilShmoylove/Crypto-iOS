@@ -17,8 +17,6 @@ public struct CoinDetailView: View {
     
     @ObservedObject private var walletViewModel: WalletViewModel
     
-    @State private var selected: Int = 0
-    
     private let data: Coin
     
     init(
@@ -32,23 +30,31 @@ public struct CoinDetailView: View {
     public var body: some View {
         NavigationView {
             List {
+                
+                //MARK: - Coin summary
+                
                 self.coinSummary
+                
+                //MARK: - Coin actions
+                
                 self.coinActions
+                
+                //MARK: - Coin news
+                
                 self.coinNews
             }
+            .navigationBarTitleDisplayMode(.inline)
+            
+            //MARK: - Appear fetch current meta data
+            
             .task {
                 do {
-                    
-                    //MARK: - Appear fetch current meta data
-                    
                     guard let uuid = self.data.uuid else { return }
                     try await self.walletViewModel.fetchCoinData(for: uuid)
                 } catch {
                     print(error.localizedDescription)
                 }
             }
-            .onDisappear { self.walletViewModel.clearCoinDetailData() }
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     self.navigationPrincipal
@@ -77,7 +83,7 @@ extension CoinDetailView {
                     content: [
                         "1d", "1w", "1m", "1y", "5y"
                     ],
-                    selection: self.$selected
+                    selection: .constant(4)
                 )
                 .padding(.vertical)
                 self.coinStats
@@ -89,29 +95,27 @@ extension CoinDetailView {
     
     private var coinStats: some View {
         ZStack {
-            if let data = self.walletViewModel.coinDetailData {
-                HStack {
-                    self.getStatsColums(
-                        for: [
-                            "24H": data.the24HVolume ?? "",
-                            "Max": String(data.doubleSparkLine.max() ?? 0),
-                            "Min": String(data.doubleSparkLine.min() ?? 0)
-                        ]
-                    )
-                    
-                    Divider()
-                        .padding(2)
-                    
-                    self.getStatsColums(
-                        for: [
-                            "Cap": data.marketCap ?? "",
-                            "All Time": data.allTimeHigh?.price ?? "",
-                            "Rank": data.rank?.description ?? ""
-                        ]
-                    )
-                }
-                .padding(.vertical, 4)
+            HStack {
+                self.getStatsColums(
+                    for: [
+                        "24H": self.walletViewModel.coinDetailData?.the24HVolume ?? "",
+                        "Max": String(self.walletViewModel.coinDetailData?.doubleSparkLine.max() ?? 0),
+                        "Min": String(self.walletViewModel.coinDetailData?.doubleSparkLine.min() ?? 0)
+                    ]
+                )
+                
+                Divider()
+                    .padding(2)
+                
+                self.getStatsColums(
+                    for: [
+                        "Cap": self.walletViewModel.coinDetailData?.marketCap ?? "",
+                        "All Time": self.walletViewModel.coinDetailData?.allTimeHigh?.price ?? "",
+                        "Rank": self.walletViewModel.coinDetailData?.rank?.description ?? ""
+                    ]
+                )
             }
+            .padding(.vertical, 4)
         }
         .animation(.default, value: self.walletViewModel.coinDetailData == nil)
     }
@@ -142,7 +146,7 @@ extension CoinDetailView {
         Section {
             HStack {
                 Label {
-                    Text("Send")
+                    Text("wallet_action_send")
                 } icon: {
                     Image(systemName: "arrow.uturn.right")
                 }
@@ -153,7 +157,7 @@ extension CoinDetailView {
                 .background(Color.primaryBlue.opacity(0.125))
                 .cornerRadius(12)
                 
-                Text("Buy \(self.data.symbol ?? "")")
+                Text("wallet_action_buy_\(self.data.symbol ?? "")")
                     .foregroundColor(.primaryBlue)
                     .font(.system(size: 16, weight: .semibold))
                     .frame(maxWidth: .infinity)
@@ -165,51 +169,11 @@ extension CoinDetailView {
         }
     }
     
-    //MARK: - Coin news
-    
-    private var coinNews: some View {
-        Section {
-            Toggle(isOn: .constant(true)) {
-                Text("News")
-                    .font(.system(size: 14, weight: .bold))
-            }
-            .padding(.vertical, 4)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text("cryptonews.net")
-                    .foregroundColor(.secondary)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .font(.system(size: 10))
-                
-                Text("Coin Center Sues US Treasury Over Tax Reporting Rule")
-                    .font(.system(size: 14))
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-            }
-            .padding(.vertical, 4)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text("cryptonews.net")
-                    .foregroundColor(.secondary)
-                    .fontWeight(.semibold)
-                    .textCase(.uppercase)
-                    .font(.system(size: 10))
-                
-                Text("Bitcoin's Hashrate Hits an All-Time High Nearing 300 Exahash per Second")
-                    .font(.system(size: 14))
-                    .fontWeight(.bold)
-                    .multilineTextAlignment(.leading)
-            }
-            .padding(.vertical, 4)
-        }
-    }
-    
     //MARK: - Price stats
     
     private var priceStats: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Current price")
+            Text("wallet_current_price_title")
                 .font(.system(size: 12, weight: .medium))
             
             if let price = self.data.price {
@@ -278,5 +242,45 @@ extension CoinDetailView {
             .padding(6)
             .background(Color.getCoinBackgroundColor(for: self.data.symbol ?? ""))
             .clipShape(Circle())
+    }
+    
+    //MARK: - Coin news
+    
+    private var coinNews: some View {
+        Section {
+            Toggle(isOn: .constant(true)) {
+                Text("wallet_coin_news_title")
+                    .font(.system(size: 14, weight: .bold))
+            }
+            .padding(.vertical, 4)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("cryptonews.net")
+                    .foregroundColor(.secondary)
+                    .fontWeight(.semibold)
+                    .textCase(.uppercase)
+                    .font(.system(size: 10))
+                
+                Text("Coin Center Sues US Treasury Over Tax Reporting Rule")
+                    .font(.system(size: 14))
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+            }
+            .padding(.vertical, 4)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text("cryptonews.net")
+                    .foregroundColor(.secondary)
+                    .fontWeight(.semibold)
+                    .textCase(.uppercase)
+                    .font(.system(size: 10))
+                
+                Text("Bitcoin's Hashrate Hits an All-Time High Nearing 300 Exahash per Second")
+                    .font(.system(size: 14))
+                    .fontWeight(.bold)
+                    .multilineTextAlignment(.leading)
+            }
+            .padding(.vertical, 4)
+        }
     }
 }

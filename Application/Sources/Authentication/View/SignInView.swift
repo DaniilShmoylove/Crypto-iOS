@@ -27,7 +27,7 @@ struct SignInView: View {
                 VStack {
                     self.getNumberFields(
                         text: self.authenticationViewModel.createPIN,
-                        title: "Enter PIN"
+                        title: "authentication_pin_enter"
                     )
                     .onChange(of: self.authenticationViewModel.createPIN) { _ in
                         self.authenticationViewModel.entryUnlock()
@@ -55,7 +55,7 @@ struct SignInView: View {
                         
                         self.getNumberFields(
                             text: self.authenticationViewModel.confirmPIN,
-                            title: "Confirm PIN"
+                            title: "authentication_pin_confirm"
                         )
                         .onChange(of: self.authenticationViewModel.confirmPIN) { _ in
                             self.authenticationViewModel.checkPINs()
@@ -67,7 +67,7 @@ struct SignInView: View {
                         
                         self.getNumberFields(
                             text: self.authenticationViewModel.createPIN,
-                            title: "Create PIN"
+                            title: "authentication_pin_create"
                         )
                         .onChange(of: self.authenticationViewModel.createPIN) { _ in
                             self.authenticationViewModel.createPINChanged()
@@ -113,7 +113,7 @@ extension SignInView {
             Text(LocalizedStringKey(title))
                 .opacity(self.isAppear ? 1 : 0)
             
-            Text("PIN's do not match. Try it again")
+            Text("authentication_pin_error")
                 .opacity(
                     self.authenticationViewModel.isPINError &&
                     self.authenticationViewModel.createPIN.count == 0 ?

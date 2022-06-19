@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Resources
 
 public struct NotificationTabItemButtonView: View {
     public init() { }
@@ -20,7 +21,7 @@ public struct NotificationTabItemButtonView: View {
             VStack {
                 Image(systemName: "bell.badge")
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(.red, .gray)
+                    .foregroundStyle(Color.primaryRed, .gray)
                     .font(.system(size: 14, weight: .heavy))
                     .frame(maxWidth: .infinity)
             }
