@@ -25,6 +25,8 @@ public class ApiClient: ApiClientProtocol {
     
     public var interceptor: RequestInterceptor?
     
+    //MARK: - Perform any publisher
+    
     public func perform(_ urlRequest: URLRequest) -> AnyPublisher<Data, Error> {
         AF.request(urlRequest, interceptor: interceptor)
             .validate(statusCode: 200..<300)
@@ -33,6 +35,8 @@ public class ApiClient: ApiClientProtocol {
             .mapError({$0 as Error})
             .eraseToAnyPublisher()
     }
+    
+    //MARK: - Perform data
     
     public func perform(_ urlRequest: URLRequest) async throws -> Data {
         let data = try await AF.request(urlRequest, interceptor: interceptor)

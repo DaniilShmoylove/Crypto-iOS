@@ -22,7 +22,7 @@ public protocol CryptoRepository {
 final public class CryptoRepositoryImpl: CryptoRepository {
     public init() { decoder = JSONDecoder() }
     
-    //MARK: -mApiClient
+    //MARK: - ApiClient
     
     @Injected private var apiClient: ApiClientProtocol
     

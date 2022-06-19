@@ -60,7 +60,7 @@ internal enum CryptoRouter {
     
     //MARK: - Get parameters
     
-    private var parameters: [String: [String]] {
+    private var parameters: Parameters {
         switch self {
         case .getCoinData:
             return [
@@ -97,7 +97,7 @@ extension CryptoRouter: URLRequestConvertible {
         var request = URLRequest(url: url)
         request.method = self.method
         request.headers = self.headers
-        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(self.parameters, into: request)
+        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(self.parameters as? [String: [String]], into: request)
         return request
     }
 }

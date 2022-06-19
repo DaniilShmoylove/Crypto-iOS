@@ -40,7 +40,7 @@ extension WalletViewModel {
     
     @MainActor
     func fetchCoinData(for uuid: String) async throws {
-        guard self.coinDetailData == nil else { return }
+        guard self.coinDetailData?.uuid != uuid else { return }
         self.coinDetailData = try await self.cryptoService.fetchCoinData(for: uuid)
     }
     
@@ -60,11 +60,10 @@ extension WalletViewModel {
         Task {
             switch networkReachabilityStatus {
             case .unknown:
-                print("")
+                print("unknown")
             case .notReachable:
-                print("")
+                print("notReachable")
             case .reachable:
-                print("reachable")
                 do {
                     try await self.fetchAllCurrentMetaData()
                 } catch {

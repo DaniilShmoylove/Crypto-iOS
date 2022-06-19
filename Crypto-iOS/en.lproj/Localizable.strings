@@ -32,3 +32,4 @@
 "wallet_action_buy_%@" = "Buy %@";
 "wallet_action_send" = "Send";
 "wallet_coin_news_title" = "News";
+"wallet_not_reachable_status" = "Not reachable";
